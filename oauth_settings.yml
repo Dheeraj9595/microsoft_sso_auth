@@ -1,0 +1,10 @@
+app_id: get_env_variable('APP_ID') 
+app_secret: get_env_variable('APP_SECRET')
+redirect: "http://localhost:3000/callback" 
+scopes:   
+    - user.read   
+    - mailboxsettings.read   
+    - calendars.readwrite 
+authority: "https://login.microsoftonline.com/common"
+username: get_env_variable('USERNAME')
+password: get_env_variable('PASSWORD')
