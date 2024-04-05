@@ -2,7 +2,9 @@ from django.shortcuts import render,redirect
 from django.http import HttpResponse, HttpResponseRedirect,JsonResponse
 from django.urls import reverse
 from SSO_auth.auth_helper import get_sign_in_flow, get_token_from_code, store_user, remove_user_and_token, get_token
-from SSO_auth.graph_helper import *
+from SSO_auth.graph_helper import fetch_user_data, get_user_view
+from django.http import HttpResponseBadRequest
+import requests
 
 def home(request):
     try:
@@ -39,15 +41,42 @@ def sign_out(request):
     return HttpResponseRedirect(reverse('home'))
 
 
+# def callback(request):
+#     # Make the token request
+#     breakpoint()
+#     result = get_token_from_code(request)
+#     #Get the user's profile from graph_helper.py script
+#     user = get_user(result['access_token']) 
+#     # Store user from auth_helper.py script
+#     store_user(request, user)
+#     return redirect(f"token?access_token={result['access_token']}")
+
+# def callback(request):
+#     # Make the token request
+#     token_result = get_token_from_code(request)
+#     if token_result:
+#         # Fetch user data
+#         user_data = fetch_user_data(token_result['access_token'])
+#         if user_data:
+#             # Store user data
+#             store_user(request, user_data)
+#             return redirect(f"token?access_token={token_result['access_token']}")
+#     # If something went wrong, handle it here
+#     return HttpResponseBadRequest("Failed to fetch user data or token")
+
+
 def callback(request):
     # Make the token request
-    breakpoint()
-    result = get_token_from_code(request)
-    #Get the user's profile from graph_helper.py script
-    user = get_user(result['access_token']) 
-    # Store user from auth_helper.py script
-    store_user(request, user)
-    return redirect(f"token?access_token={result['access_token']}")
+    token_result = get_token_from_code(request)
+    if token_result:
+        # Fetch user data
+        user_data = fetch_user_data(token_result['access_token'], request)
+        if user_data:
+            # Store user data
+            store_user(request, user_data)
+            return redirect(f"token?access_token={token_result['access_token']}")
+    # If something went wrong, handle it here
+    return HttpResponseBadRequest("Failed to fetch user data or token")
 
 import msal
 def get_power_bi_access_token(request):

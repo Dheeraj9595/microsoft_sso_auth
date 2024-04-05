@@ -3,6 +3,7 @@ import msal
 import os
 import time
 
+
 stream = open('oauth_settings.yml', 'r')
 settings = yaml.load(stream, yaml.SafeLoader)
 
@@ -44,7 +45,7 @@ def get_token_from_code(request):
   flow = request.session.pop('auth_flow', {})
   print(request.GET)
 
-  result = auth_app.acquire_token_by_auth_code_flow(flow, request.GET)
+  result = auth_app.acquire_token_by_auth_code_flow(flow, request.GET)  
   save_cache(request, cache)
 
   return result
