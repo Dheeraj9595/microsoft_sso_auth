@@ -24,7 +24,7 @@ urlpatterns = [
     path('signin', views.sign_in, name='signin'),
     path('signout', views.sign_out, name='signout'),
     path('callback', views.callback, name='callback'),
-    path('token',views.get_power_bi_access_token),
-    path('powerbi-proxy/',views.power_bi_proxy,name='power_bi_proxy')
+    # path('token',views.get_power_bi_access_token),
+    # path('powerbi-proxy/',views.power_bi_proxy,name='power_bi_proxy')
 
 ]
